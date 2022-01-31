@@ -1,29 +1,38 @@
 package fr.uha.moreau.musicsgiver.model;
 
-public class MusicienGroupeAssociation {
-    private int id;
-    private int mid;
-    private int gid;
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
 
-    public MusicienGroupeAssociation(int id, int mid, int gid) {
-        this.id = id;
+@Entity(
+        tableName = "musicienGroupeAssociations",
+        primaryKeys = { "gid", "mid" },
+        indices = { @Index("gid") }
+        )
+public class MusicienGroupeAssociation {
+
+    @NonNull
+    private long mid;
+    @NonNull
+    private long gid;
+
+    public MusicienGroupeAssociation() {}
+
+    @Ignore
+    public MusicienGroupeAssociation(long mid, long gid) {
         this.mid = mid;
         this.gid = gid;
     }
 
-    public int getId() {
-        return id;
-    }
-    public int getGid() {
+    public long getGid() {
         return gid;
     }
-    public int getMid() {
+    public long getMid() {
         return mid;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
     public void setGid(int gid) {
         this.gid = gid;
     }

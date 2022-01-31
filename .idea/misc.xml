@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/layout/activity_main.xml" value="0.16983695652173914" />
+        <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/layout/fragment_test.xml" value="0.264" />
+        <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/menu/bottom_nav_menu.xml" value="0.21614583333333334" />
       </map>
     </option>
   </component>

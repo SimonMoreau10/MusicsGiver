@@ -15,7 +15,7 @@ import fr.uha.moreau.musicsgiver.model.MusicienGroupeAssociation;
 import fr.uha.moreau.musicsgiver.model.MusicienNiveauFormationAssociation;
 
 
-@TypeConverters({DatabaseTypeConverters.class})
+// @TypeConverters({DatabaseTypeConverters.class})
 @Database(entities = {
         Musicien.class,
         MusicienGroupeAssociation.class,
