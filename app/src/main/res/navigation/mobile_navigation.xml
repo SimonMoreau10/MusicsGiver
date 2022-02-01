@@ -3,13 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/fragment_home">
+    app:startDestination="@+id/testFragment">
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="fr.uha.moreau.musicsgiver.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="fr.uha.moreau.musicsgiver.ui.dashboard.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -19,6 +25,6 @@
     <fragment
         android:id="@+id/testFragment"
         android:name="fr.uha.moreau.musicsgiver.ui.test.TestFragment"
-        android:label="le Simon's fragment"
+        android:label="le Simon's Fragment"
         tools:layout="@layout/fragment_test" />
 </navigation>

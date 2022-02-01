@@ -63,11 +63,43 @@ public class FeedDatabase {
         return instrumentsIds;
     }
 
-    private void feedMusiciens() {
-        MusicienDao dao = AppDatabase.get().getMusicienDao();
+    private void feedMusiciensEtGroupes() {
+        MusicienDao mdao = AppDatabase.get().getMusicienDao();
+        GroupeDao gdao = AppDatabase.get().getGroupeDao();
+
         long[] musiciensIds = createMusiciens();
         long[] instrumentsIds = createInstruments();
+        long[] groupesIds = createGroupes();
 
-        dao.addMusicienNiveauFormationAssociation(new MusicienNiveauFormationAssociation(Formation.CLASSIQUE, Niveau.CONFIRME, musiciensIds[1], instrumentsIds[2]));
+        mdao.addMusicienNiveauFormationAssociation(new MusicienNiveauFormationAssociation(Formation.CLASSIQUE, Niveau.CONFIRME, musiciensIds[0], instrumentsIds[2]));
+        mdao.addMusicienNiveauFormationAssociation(new MusicienNiveauFormationAssociation(Formation.JAZZ, Niveau.DEBUTANT, musiciensIds[1], instrumentsIds[3]));
+        mdao.addMusicienNiveauFormationAssociation(new MusicienNiveauFormationAssociation(Formation.RAP, Niveau.EXPERT, musiciensIds[2], instrumentsIds[4]));
+        mdao.addMusicienNiveauFormationAssociation(new MusicienNiveauFormationAssociation(Formation.ROCK, Niveau.INTERMEDIAIRE, musiciensIds[3], instrumentsIds[5]));
+        mdao.addMusicienNiveauFormationAssociation(new MusicienNiveauFormationAssociation(Formation.FUNK, Niveau.DEBUTANT, musiciensIds[5], instrumentsIds[7]));
+        mdao.addMusicienNiveauFormationAssociation(new MusicienNiveauFormationAssociation(Formation.BLUES, Niveau.EXPERT, musiciensIds[6], instrumentsIds[8]));
+        mdao.addMusicienNiveauFormationAssociation(new MusicienNiveauFormationAssociation(Formation.ROCK, Niveau.INTERMEDIAIRE, musiciensIds[7], instrumentsIds[9]));
+        mdao.addMusicienNiveauFormationAssociation(new MusicienNiveauFormationAssociation(Formation.FUNK, Niveau.CONFIRME, musiciensIds[8], instrumentsIds[0]));
+        mdao.addMusicienNiveauFormationAssociation(new MusicienNiveauFormationAssociation(Formation.BLUES, Niveau.CONFIRME, musiciensIds[9], instrumentsIds[1]));
+
+        gdao.addMusicienGroupeAssociation(new MusicienGroupeAssociation(musiciensIds[0], groupesIds[0]));
+        gdao.addMusicienGroupeAssociation(new MusicienGroupeAssociation(musiciensIds[1], groupesIds[1]));
+        gdao.addMusicienGroupeAssociation(new MusicienGroupeAssociation(musiciensIds[2], groupesIds[0]));
+        gdao.addMusicienGroupeAssociation(new MusicienGroupeAssociation(musiciensIds[3], groupesIds[1]));
+        gdao.addMusicienGroupeAssociation(new MusicienGroupeAssociation(musiciensIds[4], groupesIds[0]));
+        gdao.addMusicienGroupeAssociation(new MusicienGroupeAssociation(musiciensIds[5], groupesIds[1]));
+        gdao.addMusicienGroupeAssociation(new MusicienGroupeAssociation(musiciensIds[6], groupesIds[0]));
+        gdao.addMusicienGroupeAssociation(new MusicienGroupeAssociation(musiciensIds[7], groupesIds[1]));
+        gdao.addMusicienGroupeAssociation(new MusicienGroupeAssociation(musiciensIds[8], groupesIds[0]));
+        gdao.addMusicienGroupeAssociation(new MusicienGroupeAssociation(musiciensIds[9], groupesIds[1]));
+    }
+
+    public void feed() {
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                feedMusiciensEtGroupes();
+            }
+        });
     }
 }

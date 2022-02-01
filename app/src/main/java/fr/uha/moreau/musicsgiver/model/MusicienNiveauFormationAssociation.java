@@ -51,10 +51,10 @@ public class MusicienNiveauFormationAssociation {
     public void setNiveau(Niveau niveau) {
         this.niveau = niveau;
     }
-    public void setMid(int mid) {
+    public void setMid(long mid) {
         this.mid = mid;
     }
-    public void setIid(int iid) {
+    public void setIid(long iid) {
         this.iid = iid;
     }
 }

@@ -10,6 +10,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import fr.uha.moreau.musicsgiver.model.Groupe;
+import fr.uha.moreau.musicsgiver.model.Instrument;
 import fr.uha.moreau.musicsgiver.model.Musicien;
 import fr.uha.moreau.musicsgiver.model.MusicienGroupeAssociation;
 import fr.uha.moreau.musicsgiver.model.MusicienNiveauFormationAssociation;
@@ -20,7 +21,8 @@ import fr.uha.moreau.musicsgiver.model.MusicienNiveauFormationAssociation;
         Musicien.class,
         MusicienGroupeAssociation.class,
         Groupe.class,
-        MusicienNiveauFormationAssociation.class
+        MusicienNiveauFormationAssociation.class,
+        Instrument.class
 }, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 

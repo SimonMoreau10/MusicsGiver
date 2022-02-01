@@ -33,10 +33,10 @@ public class MusicienGroupeAssociation {
         return mid;
     }
 
-    public void setGid(int gid) {
+    public void setGid(long gid) {
         this.gid = gid;
     }
-    public void setMid(int mid) {
+    public void setMid(long mid) {
         this.mid = mid;
     }
 }

@@ -34,7 +34,7 @@ public class Instrument {
         return nom;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
     public void setClasse(ClasseDInstrument classe) {

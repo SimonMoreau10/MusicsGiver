@@ -10,6 +10,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import fr.uha.moreau.musicsgiver.database.FeedDatabase;
 import fr.uha.moreau.musicsgiver.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FeedDatabase feeder = new FeedDatabase();
+        feeder.feed();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

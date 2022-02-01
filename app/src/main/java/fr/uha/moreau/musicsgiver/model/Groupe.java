@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "groups")
+@Entity(tableName = "groupes")
 public class Groupe {
     @PrimaryKey(autoGenerate = true)
     @NonNull
@@ -39,7 +39,7 @@ public class Groupe {
         return nombre;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
     public void setName(String name) {
