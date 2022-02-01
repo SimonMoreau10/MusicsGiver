@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/testFragment">
+    app:startDestination="@+id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -18,13 +18,8 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="fr.uha.moreau.musicsgiver.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
-    <fragment
-        android:id="@+id/testFragment"
-        android:name="fr.uha.moreau.musicsgiver.ui.test.TestFragment"
-        android:label="le Simon's Fragment"
-        tools:layout="@layout/fragment_test" />
+        android:id="@+id/instrumentsListFragment"
+        android:name="fr.uha.moreau.musicsgiver.ui.instruments.InstrumentsListFragment"
+        android:label="Instruments"
+        tools:layout="@layout/fragment_list_instruments" />
 </navigation>
