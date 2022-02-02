@@ -1,5 +1,6 @@
 package fr.uha.moreau.musicsgiver.ui.instruments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -25,6 +31,7 @@ import fr.uha.moreau.musicsgiver.database.AppDatabase;
 import fr.uha.moreau.musicsgiver.database.FeedDatabase;
 import fr.uha.moreau.musicsgiver.databinding.FragmentListInstrumentsBinding;
 import fr.uha.moreau.musicsgiver.databinding.InstrumentItemBinding;
+import fr.uha.moreau.musicsgiver.model.ClasseDInstrument;
 import fr.uha.moreau.musicsgiver.model.Instrument;
 
 public class InstrumentsListFragment extends Fragment {
@@ -41,6 +48,15 @@ public class InstrumentsListFragment extends Fragment {
         DividerItemDecoration divider = new DividerItemDecoration(binding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         binding.recyclerView.addItemDecoration(divider);
         adapter = new InstrumentAdapter();
+        Spinner spinner = binding.spinnerClasseDInstrument;
+        // spinner.setAdapter(new ArrayAdapter<ClasseDInstrument>(this, android.R.layout.simple_spinner_dropdown_item, ));
+        FloatingActionButton fab = binding.floatingActionButton;
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewModel.save();
+            }
+        });
 
         binding.recyclerView.setAdapter(adapter);
         return binding.getRoot();
@@ -68,10 +84,11 @@ public class InstrumentsListFragment extends Fragment {
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.instrumentMenu: return doPopulate();
+        if (item.getItemId() == R.id.instrumentMenu) {
+            return doPopulate();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -113,6 +130,7 @@ public class InstrumentsListFragment extends Fragment {
             return instruments == null ? 0 : instruments.size();
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         public void setCollection(List<Instrument> instruments) {
              this.instruments = instruments;
              notifyDataSetChanged();
