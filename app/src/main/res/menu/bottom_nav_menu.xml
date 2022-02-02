@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
+        android:id="@+id/musiciensListFragment"
         android:icon="@drawable/_85508"
         android:title="@string/musiciens" />
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/groupesListFragment"
         android:icon="@drawable/_2441"
         android:title="@string/groupes" />
 

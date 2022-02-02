@@ -3,23 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
-
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="fr.uha.moreau.musicsgiver.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
-
-    <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="fr.uha.moreau.musicsgiver.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+    app:startDestination="@id/musiciensListFragment">
 
     <fragment
         android:id="@+id/instrumentsListFragment"
         android:name="fr.uha.moreau.musicsgiver.ui.instruments.InstrumentsListFragment"
         android:label="Instruments"
         tools:layout="@layout/fragment_list_instruments" />
+    <fragment
+        android:id="@+id/groupesListFragment"
+        android:name="fr.uha.moreau.musicsgiver.ui.groupes.GroupesListFragment"
+        android:label="Groupes"
+        tools:layout="@layout/groupes_list_fragment" />
+    <fragment
+        android:id="@+id/musiciensListFragment"
+        android:name="fr.uha.moreau.musicsgiver.ui.musiciens.MusiciensListFragment"
+        android:label="Musiciens"
+        tools:layout="@layout/musiciens_list_fragment" />
 </navigation>

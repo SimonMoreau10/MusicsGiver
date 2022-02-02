@@ -8,7 +8,6 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "instruments")
 public class Instrument {
     @PrimaryKey(autoGenerate = true)
-    @NonNull
     private long id;
     private ClasseDInstrument classe;
     private String nom;
@@ -32,6 +31,9 @@ public class Instrument {
     }
     public String getNom() {
         return nom;
+    }
+    public String getClasseAAfficher() {
+        return String.valueOf(getClasse());
     }
 
     public void setId(long id) {

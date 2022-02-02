@@ -12,18 +12,16 @@ public class Groupe {
     private long id;
     private String name;
     private Formation formation;
-    private int nombre;
 
     public Groupe() {
         this.id = 0;
     }
 
     @Ignore
-    public Groupe(long id, String name, Formation formation, int nombre) {
+    public Groupe(long id, String name, Formation formation) {
         this.id = id;
         this.name = name;
         this.formation = formation;
-        this.nombre = nombre;
     }
 
     public long getId() {
@@ -35,9 +33,6 @@ public class Groupe {
     public Formation getFormation() {
         return formation;
     }
-    public int getNombre() {
-        return nombre;
-    }
 
     public void setId(long id) {
         this.id = id;
@@ -47,8 +42,5 @@ public class Groupe {
     }
     public void setFormation(Formation formation) {
         this.formation = formation;
-    }
-    public void setNombre(int nombre) {
-        this.nombre = nombre;
     }
 }

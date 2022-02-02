@@ -40,8 +40,8 @@ public class FeedDatabase {
     private long[] createGroupes() {
         long[] groupeIds = new long[2];
         GroupeDao dao = AppDatabase.get().getGroupeDao();
-        groupeIds[0] = dao.upsert(new Groupe(0, "bestGroupEver", Formation.ROCK, 5));
-        groupeIds[1] = dao.upsert(new Groupe(1, "worstGroupEver", Formation.CLASSIQUE, 15));
+        groupeIds[0] = dao.upsert(new Groupe(0, "bestGroupEver", Formation.ROCK));
+        groupeIds[1] = dao.upsert(new Groupe(1, "worstGroupEver", Formation.CLASSIQUE));
 
         return groupeIds;
     }

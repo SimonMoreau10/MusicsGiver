@@ -2,65 +2,123 @@ package fr.uha.moreau.musicsgiver.ui.instruments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.graphics.drawable.AnimatedStateListDrawableCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import fr.uha.moreau.musicsgiver.R;
+import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link InstrumentsListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import fr.uha.moreau.musicsgiver.R;
+import fr.uha.moreau.musicsgiver.database.AppDatabase;
+import fr.uha.moreau.musicsgiver.database.FeedDatabase;
+import fr.uha.moreau.musicsgiver.databinding.FragmentListInstrumentsBinding;
+import fr.uha.moreau.musicsgiver.databinding.InstrumentItemBinding;
+import fr.uha.moreau.musicsgiver.model.Instrument;
+
 public class InstrumentsListFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private InstrumentsListViewModel mViewModel;
+    private FragmentListInstrumentsBinding binding;
+    private InstrumentAdapter adapter;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public InstrumentsListFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TestFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static InstrumentsListFragment newInstance(String param1, String param2) {
-        InstrumentsListFragment fragment = new InstrumentsListFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        binding = FragmentListInstrumentsBinding.inflate(inflater, container, false);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(binding.recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
+        DividerItemDecoration divider = new DividerItemDecoration(binding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+        binding.recyclerView.addItemDecoration(divider);
+        adapter = new InstrumentAdapter();
+        binding.recyclerView.setAdapter(adapter);
+        return binding.getRoot();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mViewModel = new ViewModelProvider(this).get(InstrumentsListViewModel.class);
+
+        AppDatabase.isReady().observe(getViewLifecycleOwner(), appDatabase -> {
+            if (appDatabase == null) return;
+            mViewModel.setInstrumentDao(appDatabase.getInstrumentDao());
+            mViewModel.getInstruments().observe(getViewLifecycleOwner(), instruments -> adapter.setCollection(instruments));
+        });
+    }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.instrument_menu, menu);
+    }
+
+    private boolean doPopulate(){
+        FeedDatabase feeder = new FeedDatabase();
+        feeder.feed();
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.instrumentMenu: return doPopulate();
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list_instruments, container, false);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    private class InstrumentAdapter extends RecyclerView.Adapter<InstrumentAdapter.ViewHolder> {
+
+        private List<Instrument> instruments;
+
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            InstrumentItemBinding binding;
+            public ViewHolder(@NonNull InstrumentItemBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
+            }
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            InstrumentItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from((parent.getContext())), R.layout.instrument_item, parent, false);
+            binding.setLifecycleOwner(getViewLifecycleOwner());
+            return new ViewHolder(binding);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            Instrument i = instruments.get(position);
+            holder.binding.setI(i);
+        }
+
+        @Override
+        public int getItemCount() {
+            return instruments == null ? 0 : instruments.size();
+        }
+
+        public void setCollection(List<Instrument> instruments) {
+             this.instruments = instruments;
+             notifyDataSetChanged();
+        }
     }
 }
