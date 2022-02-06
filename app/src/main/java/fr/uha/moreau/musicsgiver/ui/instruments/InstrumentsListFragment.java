@@ -43,20 +43,33 @@ public class InstrumentsListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        adapter = new InstrumentAdapter();
         binding = FragmentListInstrumentsBinding.inflate(inflater, container, false);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(binding.recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
         DividerItemDecoration divider = new DividerItemDecoration(binding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         binding.recyclerView.addItemDecoration(divider);
-        adapter = new InstrumentAdapter();
-        Spinner spinner = binding.spinnerClasseDInstrument;
-        // spinner.setAdapter(new ArrayAdapter<ClasseDInstrument>(this, android.R.layout.simple_spinner_dropdown_item, ));
+
+        Spinner spinner = (Spinner) binding.spinnerClasseDInstrument;
+        ClasseDInstrument[] classes = ClasseDInstrument.values();
+        ArrayAdapter<ClasseDInstrument> spinadapter = new ArrayAdapter<>(binding.getRoot().getContext(), android.R.layout.simple_spinner_item, classes);
+        spinadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+        spinner.setSelection(0,false);
+        spinner.setAdapter(spinadapter);
+
         FloatingActionButton fab = binding.floatingActionButton;
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mViewModel.save();
+                String nom = binding.nom.getText().toString();
+                Instrument i = new Instrument(0, (ClasseDInstrument) spinner.getSelectedItem(), nom);
+                mViewModel.save(i);
+
+                adapter.notifyDataSetChanged();
             }
         });
+
 
         binding.recyclerView.setAdapter(adapter);
         return binding.getRoot();

@@ -26,16 +26,12 @@ public class InstrumentsListViewModel extends ViewModel {
         return instruments;
     }
 
-    public void save() {
-        Instrument instrument = new Instrument(
-                instruments.getValue().get(0).getId(),
-                instruments.getValue().get(0).getClasse(),
-                instruments.getValue().get(0).getNom());
+    public void save(Instrument i) {
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                instrumentDao.upsert(instrument);
+                instrumentDao.upsert(i);
             }
         });
     }

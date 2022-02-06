@@ -6,6 +6,8 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import fr.uha.moreau.musicsgiver.database.AppDatabase;
+
 @Entity(
         tableName = "musicienNiveauFormationAssociation",
         primaryKeys = { "formation", "niveau", "mid", "iid" },
@@ -43,6 +45,9 @@ public class MusicienNiveauFormationAssociation {
     }
     public long getIid() {
         return iid;
+    }
+    public String getNomInstrument() {
+        return AppDatabase.get().getInstrumentDao().getById(iid).getValue().getNom();
     }
 
     public void setFormation(Formation formation) {

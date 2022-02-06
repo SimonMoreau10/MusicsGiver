@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="m" type="fr.uha.moreau.musicsgiver.model.Musicien" />
+        <variable name="MNFA" type="fr.uha.moreau.musicsgiver.model.MusicienNiveauFormationAssociation" />
+
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <TextView
+            android:id="@+id/nom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{m.lastName}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/prénom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{m.firstName}"
+            app:layout_constraintEnd_toStartOf="@id/instrument"
+            app:layout_constraintStart_toEndOf="@id/nom"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/instrument"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{MNFA.nomInstrument}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/prénom"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
