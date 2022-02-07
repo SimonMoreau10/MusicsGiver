@@ -31,4 +31,7 @@ public interface MusicienDao {
 
     @Query("Select * from musicienNiveauFormationAssociation where mid= :mid")
     public MusicienNiveauFormationAssociation getMnfaByMid(long mid);
+
+    @Query("SELECT * FROM musicien ORDER BY ID DESC LIMIT 1")
+    long getLastId();
 }

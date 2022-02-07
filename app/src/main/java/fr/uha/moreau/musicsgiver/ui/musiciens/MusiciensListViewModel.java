@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 import fr.uha.moreau.musicsgiver.database.AppDatabase;
 import fr.uha.moreau.musicsgiver.database.InstrumentDao;
 import fr.uha.moreau.musicsgiver.database.MusicienDao;
+import fr.uha.moreau.musicsgiver.model.Instrument;
 import fr.uha.moreau.musicsgiver.model.Musicien;
 import fr.uha.moreau.musicsgiver.model.MusicienNiveauFormationAssociation;
 
@@ -66,5 +67,9 @@ public class MusiciensListViewModel extends ViewModel {
 
     public void setInstrumentDao(InstrumentDao instrumentDao) {
         this.instrumentDao = instrumentDao;
+    }
+
+    public LiveData<List<Instrument>> getAllInstruments() {
+        return instrumentDao.getAll();
     }
 }

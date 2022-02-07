@@ -51,6 +51,9 @@ public class MusiciensListFragment extends Fragment {
     private MusiciensListFragmentBinding binding;
     private MusiciensAdapter adapter;
 
+    private Spinner spinner;
+    private FloatingActionButton fab;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -60,32 +63,9 @@ public class MusiciensListFragment extends Fragment {
         DividerItemDecoration divider = new DividerItemDecoration(binding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         binding.recyclerView.addItemDecoration(divider);
 
-         /* Spinner spinner = (Spinner) binding.spinnerInstrument;
-        InstrumentDao instrumentDao = AppDatabase.get().getInstrumentDao();
-        List<Instrument> instruments = instrumentDao.getAll().getValue();
-        ArrayAdapter<Instrument> spinadapter = new ArrayAdapter<>(binding.getRoot().getContext(), android.R.layout.simple_spinner_item, instruments);
-        spinadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-        spinner.setSelection(0,false);
-        spinner.setAdapter(spinadapter);*/
+        spinner = (Spinner) binding.spinnerInstrument;
+        fab = binding.floatingActionButton;
 
-        FloatingActionButton fab = binding.floatingActionButton;
-
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /* String nom = binding.nom.getText().toString();
-                String prenom = binding.prNom.getText().toString();
-                Musicien m = new Musicien(0, prenom, nom);
-                mViewModel.addMusicien(m);
-                adapter.notifyDataSetChanged();
-                Instrument i = (Instrument) spinner.getSelectedItem();
-                MusicienNiveauFormationAssociation mnfa = new MusicienNiveauFormationAssociation(Formation.BLUES, Niveau.INTERMEDIAIRE, m.getId(), i.getId());
-                mViewModel.addAssociation(mnfa);
-
-                adapter.notifyDataSetChanged(); */
-            }
-        });
 
 
         binding.recyclerView.setAdapter(adapter);
@@ -102,6 +82,36 @@ public class MusiciensListFragment extends Fragment {
             mViewModel.setMusicienDao(appDatabase.getMusicienDao());
             mViewModel.setInstrumentDao(appDatabase.getInstrumentDao());
             mViewModel.getMusicienNiveauFormationAssociation().observe(getViewLifecycleOwner(), mnfas -> adapter.setCollectionAssociations(mnfas));
+            mViewModel.getAllInstruments().observe(getViewLifecycleOwner(), is -> {
+                Instrument[] instruments = is.toArray(new Instrument[0]);
+                ArrayAdapter<Instrument> spinadapter = new ArrayAdapter<>(binding.getRoot().getContext(), android.R.layout.simple_spinner_item, instruments);
+                spinadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+                spinner.setSelection(0,false);
+                spinner.setAdapter(spinadapter);
+            });
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String nom = binding.nom.getText().toString();
+                String prenom = binding.prNom.getText().toString();
+                Executor executor = Executors.newSingleThreadExecutor();
+                final MusicienDao[] musicienDao = new MusicienDao[1];
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        musicienDao[0] = mViewModel.getMusicienDao();
+                        long id = musicienDao[0].getLastId() + 1;
+                        Musicien m = new Musicien(id, prenom, nom);
+                        mViewModel.addMusicien(m);
+                        Instrument i = (Instrument) spinner.getSelectedItem();
+                        MusicienNiveauFormationAssociation mnfa = new MusicienNiveauFormationAssociation(Formation.BLUES, Niveau.INTERMEDIAIRE, m.getId(), i.getId());
+                        mViewModel.addAssociation(mnfa);
+                    }
+                });
+
+            }
         });
     }
 
