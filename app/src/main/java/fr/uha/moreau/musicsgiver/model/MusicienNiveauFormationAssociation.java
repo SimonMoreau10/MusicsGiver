@@ -10,19 +10,17 @@ import fr.uha.moreau.musicsgiver.database.AppDatabase;
 
 @Entity(
         tableName = "musicienNiveauFormationAssociation",
-        primaryKeys = { "formation", "niveau", "mid", "iid" },
-        indices = { @Index("formation"), @Index("niveau"), @Index("iid") }
+        primaryKeys = { "mid" },
+        indices = { @Index("formation"), @Index("niveau"), @Index("mid") }
         )
 public class MusicienNiveauFormationAssociation {
 
     @NonNull
-    public Formation formation;
+    private Formation formation;
     @NonNull
-    public Niveau niveau;
-    @NonNull
-    public long mid;
-    @NonNull
-    public long iid;
+    private Niveau niveau;
+    private long mid;
+    private long iid;
 
     public MusicienNiveauFormationAssociation() {}
 
@@ -45,9 +43,6 @@ public class MusicienNiveauFormationAssociation {
     }
     public long getIid() {
         return iid;
-    }
-    public String getNomInstrument() {
-        return AppDatabase.get().getInstrumentDao().getById(iid).getValue().getNom();
     }
 
     public void setFormation(Formation formation) {

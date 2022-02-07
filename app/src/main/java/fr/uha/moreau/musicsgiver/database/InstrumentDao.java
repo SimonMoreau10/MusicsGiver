@@ -18,7 +18,7 @@ public interface InstrumentDao {
     long upsert(Instrument instrument);
 
     @Query("Select * from instruments where id = :id")
-    public LiveData<Instrument> getById(long id);
+    public Instrument getById(long id);
 
     @Query("Select * from instruments")
     public LiveData<List<Instrument>> getAll();

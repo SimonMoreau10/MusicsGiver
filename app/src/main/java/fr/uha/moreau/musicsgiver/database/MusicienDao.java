@@ -21,5 +21,14 @@ public interface MusicienDao {
     void addMusicienNiveauFormationAssociation(MusicienNiveauFormationAssociation musicienNiveauFormationAssociation);
 
     @Query("Select * from musicien")
-    public LiveData<List<Musicien>> getAll();
+    public LiveData<List<Musicien>> getAllMusiciens();
+
+    @Query("Select * from musicienNiveauFormationAssociation")
+    public LiveData<List<MusicienNiveauFormationAssociation>> getAllMnfas();
+
+    @Query("Select * from musicien where id= :id")
+    public Musicien getById(long id);
+
+    @Query("Select * from musicienNiveauFormationAssociation where mid= :mid")
+    public MusicienNiveauFormationAssociation getMnfaByMid(long mid);
 }

@@ -25,11 +25,15 @@ import android.widget.SpinnerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import fr.uha.moreau.musicsgiver.R;
 import fr.uha.moreau.musicsgiver.database.AppDatabase;
 import fr.uha.moreau.musicsgiver.database.FeedDatabase;
 import fr.uha.moreau.musicsgiver.database.InstrumentDao;
+import fr.uha.moreau.musicsgiver.database.MusicienDao;
 import fr.uha.moreau.musicsgiver.databinding.FragmentListInstrumentsBinding;
 import fr.uha.moreau.musicsgiver.databinding.InstrumentItemBinding;
 import fr.uha.moreau.musicsgiver.databinding.MusicienItemBinding;
@@ -56,7 +60,7 @@ public class MusiciensListFragment extends Fragment {
         DividerItemDecoration divider = new DividerItemDecoration(binding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         binding.recyclerView.addItemDecoration(divider);
 
-        /* Spinner spinner = (Spinner) binding.spinnerInstrument;
+         /* Spinner spinner = (Spinner) binding.spinnerInstrument;
         InstrumentDao instrumentDao = AppDatabase.get().getInstrumentDao();
         List<Instrument> instruments = instrumentDao.getAll().getValue();
         ArrayAdapter<Instrument> spinadapter = new ArrayAdapter<>(binding.getRoot().getContext(), android.R.layout.simple_spinner_item, instruments);
@@ -96,7 +100,8 @@ public class MusiciensListFragment extends Fragment {
         AppDatabase.isReady().observe(getViewLifecycleOwner(), appDatabase -> {
             if (appDatabase == null) return;
             mViewModel.setMusicienDao(appDatabase.getMusicienDao());
-            mViewModel.getMusiciens().observe(getViewLifecycleOwner(), musiciens -> adapter.setCollection(musiciens));
+            mViewModel.setInstrumentDao(appDatabase.getInstrumentDao());
+            mViewModel.getMusicienNiveauFormationAssociation().observe(getViewLifecycleOwner(), mnfas -> adapter.setCollectionAssociations(mnfas));
         });
     }
 
@@ -108,7 +113,12 @@ public class MusiciensListFragment extends Fragment {
 
     private class MusiciensAdapter extends RecyclerView.Adapter<MusiciensAdapter.ViewHolder> {
 
-        private List<Musicien> musiciens;
+        private List<MusicienNiveauFormationAssociation> mnfas;
+
+        public void setCollectionAssociations(List<MusicienNiveauFormationAssociation> mnfas) {
+            this.mnfas = mnfas;
+            notifyDataSetChanged();
+        }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
             MusicienItemBinding binding;
@@ -128,19 +138,28 @@ public class MusiciensListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            Musicien m = musiciens.get(position);
-            holder.binding.setM(m);
+            MusicienNiveauFormationAssociation mnfa = mnfas.get(position);
+            Executor executor = Executors.newSingleThreadExecutor();
+            final MusicienDao[] musicienDao = new MusicienDao[1];
+            final InstrumentDao[] instrumentDao = new InstrumentDao[1];
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    musicienDao[0] = mViewModel.getMusicienDao();
+                    instrumentDao[0] = mViewModel.getInstrumentDao();
+                    Musicien m = musicienDao[0].getById(mnfa.getMid());
+                    Instrument i = instrumentDao[0].getById(mnfa.getIid());
+                    holder.binding.setI(i);
+                    holder.binding.setM(m);
+                }
+            });
         }
 
         @Override
         public int getItemCount() {
-            return musiciens == null ? 0 : musiciens.size();
+            return mnfas == null ? 0 : mnfas.size();
         }
 
-        @SuppressLint("NotifyDataSetChanged")
-        public void setCollection(List<Musicien> musiciens) {
-            this.musiciens = musiciens;
-            notifyDataSetChanged();
-        }
+
     }
 }

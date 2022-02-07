@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable name="m" type="fr.uha.moreau.musicsgiver.model.Musicien" />
-        <variable name="MNFA" type="fr.uha.moreau.musicsgiver.model.MusicienNiveauFormationAssociation" />
+        <variable name="i" type="fr.uha.moreau.musicsgiver.model.Instrument" />
 
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,16 +14,19 @@
 
         <TextView
             android:id="@+id/nom"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{m.lastName}"
+            android:textAlignment="textStart"
+            app:layout_constraintEnd_toStartOf="@+id/prénom"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/prénom"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textAlignment="center"
             android:text="@{m.firstName}"
             app:layout_constraintEnd_toStartOf="@id/instrument"
             app:layout_constraintStart_toEndOf="@id/nom"
@@ -31,9 +34,10 @@
 
         <TextView
             android:id="@+id/instrument"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{MNFA.nomInstrument}"
+            android:text="@{i.nom}"
+            android:textAlignment="textEnd"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/prénom"
             app:layout_constraintTop_toTopOf="parent" />

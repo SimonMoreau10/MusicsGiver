@@ -9,6 +9,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import fr.uha.moreau.musicsgiver.database.AppDatabase;
+import fr.uha.moreau.musicsgiver.database.InstrumentDao;
 import fr.uha.moreau.musicsgiver.database.MusicienDao;
 import fr.uha.moreau.musicsgiver.model.Musicien;
 import fr.uha.moreau.musicsgiver.model.MusicienNiveauFormationAssociation;
@@ -16,6 +17,8 @@ import fr.uha.moreau.musicsgiver.model.MusicienNiveauFormationAssociation;
 public class MusiciensListViewModel extends ViewModel {
     private MusicienDao musicienDao;
     private MediatorLiveData<List<Musicien>> musiciens;
+    private MediatorLiveData<List<MusicienNiveauFormationAssociation>> mnfas;
+    private InstrumentDao instrumentDao;
 
     public void addMusicien(Musicien m) {
         Executor executor = Executors.newSingleThreadExecutor();
@@ -40,11 +43,28 @@ public class MusiciensListViewModel extends ViewModel {
     public void setMusicienDao(MusicienDao musicienDao) {
         this.musicienDao = musicienDao;
         this.musiciens = new MediatorLiveData<>();
-        this.musiciens.addSource(musicienDao.getAll(), musiciens::setValue);
+        this.musiciens.addSource(musicienDao.getAllMusiciens(), musiciens::setValue);
+        this.mnfas = new MediatorLiveData<>();
+        this.mnfas.addSource(musicienDao.getAllMnfas(), mnfas::setValue);
+    }
 
+    public MusicienDao getMusicienDao() {
+        return musicienDao;
+    }
+
+    public InstrumentDao getInstrumentDao() {
+        return instrumentDao;
     }
 
     public LiveData<List<Musicien>> getMusiciens() {
         return this.musiciens;
+    }
+
+    public LiveData<List<MusicienNiveauFormationAssociation>> getMusicienNiveauFormationAssociation() {
+        return this.mnfas;
+    }
+
+    public void setInstrumentDao(InstrumentDao instrumentDao) {
+        this.instrumentDao = instrumentDao;
     }
 }
