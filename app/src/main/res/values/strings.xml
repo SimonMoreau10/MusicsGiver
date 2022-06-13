@@ -13,4 +13,6 @@
     <string name="pr_nom">Prénom</string>
     <string name="nom">Nom</string>
     <string name="feed">Feed</string>
+    <string name="instrument">Instrument</string>
+    <string name="delete">Delete</string>
 </resources>

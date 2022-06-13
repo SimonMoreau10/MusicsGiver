@@ -29,4 +29,10 @@ public interface GroupeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addMusicienGroupeAssociation(MusicienGroupeAssociation musicienGroupeAssociation);
+
+    @Query("Select * from musicienGroupeAssociations")
+    public LiveData<List<MusicienGroupeAssociation>> getAllMgas();
+
+    @Delete
+    public void delete(MusicienGroupeAssociation mga);
 }

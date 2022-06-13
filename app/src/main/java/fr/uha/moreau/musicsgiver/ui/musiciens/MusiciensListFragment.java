@@ -1,6 +1,8 @@
 package fr.uha.moreau.musicsgiver.ui.musiciens;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.ActionOnlyNavDirections;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
@@ -53,6 +59,7 @@ public class MusiciensListFragment extends Fragment {
 
     private Spinner spinner;
     private FloatingActionButton fab;
+    private Button button;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -65,6 +72,10 @@ public class MusiciensListFragment extends Fragment {
 
         spinner = (Spinner) binding.spinnerInstrument;
         fab = binding.floatingActionButton;
+        button = binding.button;
+        binding.button.setOnClickListener(
+                view -> NavHostFragment.findNavController(this).navigate(R.id.action_musiciensListFragment_to_musicienFragment)
+        );
 
 
 
@@ -110,13 +121,21 @@ public class MusiciensListFragment extends Fragment {
                         mViewModel.addAssociation(mnfa);
                     }
                 });
+            }
+        });
 
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MusiciensListFragmentDirections.ActionMusiciensListFragmentToMusicienFragment action = MusiciensListFragmentDirections.actionMusiciensListFragmentToMusicienFragment();
+                action.setId(0);
+                NavHostFragment.findNavController(MusiciensListFragment.this).navigate(action);
             }
         });
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {;
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }

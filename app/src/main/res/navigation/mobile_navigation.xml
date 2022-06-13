@@ -19,5 +19,18 @@
         android:id="@+id/musiciensListFragment"
         android:name="fr.uha.moreau.musicsgiver.ui.musiciens.MusiciensListFragment"
         android:label="Musiciens"
-        tools:layout="@layout/musiciens_list_fragment" />
+        tools:layout="@layout/musiciens_list_fragment" >
+        <action
+            android:id="@+id/action_musiciensListFragment_to_musicienFragment"
+            app:destination="@id/musicienFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/musicienFragment"
+        android:name="fr.uha.moreau.musicsgiver.ui.musiciens.MusicienFragment"
+        android:label="MusicienFragment" >
+        <argument
+            android:name="id"
+            android:defaultValue="0L"
+            app:argType="long" />
+    </fragment>
 </navigation>

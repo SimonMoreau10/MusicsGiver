@@ -8,7 +8,9 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +35,7 @@ import fr.uha.moreau.musicsgiver.databinding.FragmentListInstrumentsBinding;
 import fr.uha.moreau.musicsgiver.databinding.InstrumentItemBinding;
 import fr.uha.moreau.musicsgiver.model.ClasseDInstrument;
 import fr.uha.moreau.musicsgiver.model.Instrument;
+import fr.uha.moreau.musicsgiver.ui.ItemSwipeCallback;
 
 public class InstrumentsListFragment extends Fragment {
 
@@ -70,7 +73,27 @@ public class InstrumentsListFragment extends Fragment {
             }
         });
 
+        ItemTouchHelper touchHelper = new ItemTouchHelper(
+                new ItemSwipeCallback(getContext(), ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT | ItemTouchHelper.UP , new ItemSwipeCallback.SwipeListener() {
+                    @Override
+                    public void onSwiped(int direction, int position) {
+                        Instrument c = adapter.instruments.get(position);
+                        switch (direction) {
 
+                            case ItemTouchHelper.RIGHT:
+                                System.out.println("ok on essaie déjà ca");
+
+
+                                break;
+                            case ItemTouchHelper.LEFT:
+                                mViewModel.deleteInstrument(c);
+                                break;
+                        }
+                    }
+                })
+        );
+
+        touchHelper.attachToRecyclerView(binding.recyclerView);
         binding.recyclerView.setAdapter(adapter);
         return binding.getRoot();
     }
@@ -100,7 +123,9 @@ public class InstrumentsListFragment extends Fragment {
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.instrumentMenu) {
+        if (item.getItemId() == R.id.feed) {
+            return doPopulate();
+        } else if (item.getItemId() == R.id.delete) {
             return doPopulate();
         }
         return super.onOptionsItemSelected(item);

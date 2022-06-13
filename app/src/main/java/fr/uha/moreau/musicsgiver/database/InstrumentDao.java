@@ -2,6 +2,7 @@ package fr.uha.moreau.musicsgiver.database;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -22,4 +23,7 @@ public interface InstrumentDao {
 
     @Query("Select * from instruments")
     public LiveData<List<Instrument>> getAll();
+
+    @Delete
+    void delete(Instrument i);
 }

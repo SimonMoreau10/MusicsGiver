@@ -102,4 +102,26 @@ public class FeedDatabase {
             }
         });
     }
+
+    public void delete() {
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                deleteAllTheDatabase();
+            }
+        });
+    }
+
+    private void deleteAllTheDatabase() {
+        MusicienDao dao = AppDatabase.get().getMusicienDao();
+        GroupeDao gdao = AppDatabase.get().getGroupeDao();
+        InstrumentDao idao = AppDatabase.get().getInstrumentDao();
+
+        idao.getAll().getValue().forEach(idao::delete);
+        gdao.getAll().getValue().forEach(gdao::delete);
+        gdao.getAllMgas().getValue().forEach(gdao::delete);
+        dao.getAllMusiciens().getValue().forEach(dao::delete);
+        dao.getAllMnfas().getValue().forEach(dao::delete);
+    }
 }

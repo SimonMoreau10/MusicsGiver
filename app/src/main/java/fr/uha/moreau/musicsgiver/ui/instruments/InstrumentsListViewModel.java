@@ -35,4 +35,14 @@ public class InstrumentsListViewModel extends ViewModel {
             }
         });
     }
+
+    public void deleteInstrument(Instrument i) {
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                instrumentDao.delete(i);
+            }
+        });
+    }
 }

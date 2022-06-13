@@ -2,12 +2,14 @@ package fr.uha.moreau.musicsgiver.database;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
 
+import fr.uha.moreau.musicsgiver.model.Groupe;
 import fr.uha.moreau.musicsgiver.model.Instrument;
 import fr.uha.moreau.musicsgiver.model.Musicien;
 import fr.uha.moreau.musicsgiver.model.MusicienNiveauFormationAssociation;
@@ -34,4 +36,10 @@ public interface MusicienDao {
 
     @Query("SELECT * FROM musicien ORDER BY ID DESC LIMIT 1")
     long getLastId();
+
+    @Delete
+    public void delete(Musicien musicien);
+
+    @Delete
+    public void delete(MusicienNiveauFormationAssociation mnfa);
 }
