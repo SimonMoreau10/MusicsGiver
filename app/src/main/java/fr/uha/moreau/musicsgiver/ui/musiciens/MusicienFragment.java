@@ -147,6 +147,12 @@ public class MusicienFragment extends Fragment {
                         spinnerNiveau.setSelection(getIndex(spinnerNiveau, m.getNiveau().toString()));
                         spinnerInstrument.setSelection(getIndex(spinnerInstrument, m.getInstrument().getNom()));
                         spinnerClasseInstrument.setSelection(getIndex(spinnerClasseInstrument, m.getInstrument().getClasseAAfficher()));
+                        prenom.setEnabled(false);
+                        nom.setEnabled(false);
+                        spinnerFormation.setEnabled(false);
+                        spinnerInstrument.setEnabled(false);
+                        spinnerClasseInstrument.setEnabled(false);
+                        spinnerNiveau.setEnabled(false);
                     }
                 });
             }
@@ -168,11 +174,17 @@ public class MusicienFragment extends Fragment {
                     public void run() {
                         Musicien m = new Musicien(0, prenom, nom);
                         mViewModel.addMusicien(m);
+                    }
+                });
+                NavHostFragment.findNavController(MusicienFragment.this).navigate((MusicienFragmentDirections.actionMusicienFragmentToMusiciensListFragment()));
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
                         MusicienNiveauFormationAssociation mnfa = new MusicienNiveauFormationAssociation(formation, niveau, mViewModel.getLastIDMusicien(), instrument.getId());
                         mViewModel.addMnfa(mnfa);
                     }
                 });
-                NavHostFragment.findNavController(MusicienFragment.this).navigate((MusicienFragmentDirections.actionMusicienFragmentToMusiciensListFragment()));
+
             }
         });
 
