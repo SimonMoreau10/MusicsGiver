@@ -27,10 +27,14 @@
     <fragment
         android:id="@+id/musicienFragment"
         android:name="fr.uha.moreau.musicsgiver.ui.musiciens.MusicienFragment"
-        android:label="MusicienFragment" >
+        android:label="Musicien"
+        tools:layout="@layout/musicien_fragment">
         <argument
             android:name="id"
             android:defaultValue="0L"
             app:argType="long" />
+        <action
+            android:id="@+id/action_musicienFragment_to_musiciensListFragment"
+            app:destination="@id/musiciensListFragment" />
     </fragment>
 </navigation>

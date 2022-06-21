@@ -27,6 +27,8 @@ import android.widget.SpinnerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import fr.uha.moreau.musicsgiver.R;
 import fr.uha.moreau.musicsgiver.database.AppDatabase;
@@ -74,17 +76,11 @@ public class InstrumentsListFragment extends Fragment {
         });
 
         ItemTouchHelper touchHelper = new ItemTouchHelper(
-                new ItemSwipeCallback(getContext(), ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT | ItemTouchHelper.UP , new ItemSwipeCallback.SwipeListener() {
+                new ItemSwipeCallback(getContext(), ItemTouchHelper.LEFT | ItemTouchHelper.UP , new ItemSwipeCallback.SwipeListener() {
                     @Override
                     public void onSwiped(int direction, int position) {
                         Instrument c = adapter.instruments.get(position);
                         switch (direction) {
-
-                            case ItemTouchHelper.RIGHT:
-                                System.out.println("ok on essaie déjà ca");
-
-
-                                break;
                             case ItemTouchHelper.LEFT:
                                 mViewModel.deleteInstrument(c);
                                 break;
@@ -107,6 +103,8 @@ public class InstrumentsListFragment extends Fragment {
             if (appDatabase == null) return;
             mViewModel.setInstrumentDao(appDatabase.getInstrumentDao());
             mViewModel.getInstruments().observe(getViewLifecycleOwner(), instruments -> adapter.setCollection(instruments));
+            mViewModel.setGroupeDao(appDatabase.getGroupeDao());
+            mViewModel.setMusicienDao(appDatabase.getMusicienDao());
         });
     }
     @Override
@@ -126,9 +124,21 @@ public class InstrumentsListFragment extends Fragment {
         if (item.getItemId() == R.id.feed) {
             return doPopulate();
         } else if (item.getItemId() == R.id.delete) {
-            return doPopulate();
+            System.out.println("C'est un test pour la suppression");
+            return doDelete();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean doDelete() {
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mViewModel.deleteAll();
+            }
+        });
+        return true;
     }
 
     @Override

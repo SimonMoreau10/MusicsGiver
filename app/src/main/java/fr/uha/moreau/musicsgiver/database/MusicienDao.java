@@ -35,11 +35,17 @@ public interface MusicienDao {
     public MusicienNiveauFormationAssociation getMnfaByMid(long mid);
 
     @Query("SELECT * FROM musicien ORDER BY ID DESC LIMIT 1")
-    long getLastId();
+    public Musicien getLastId();
 
     @Delete
     public void delete(Musicien musicien);
 
     @Delete
     public void delete(MusicienNiveauFormationAssociation mnfa);
+
+    @Query("DELETE FROM musicienNiveauFormationAssociation")
+    public void deleteAllMnfas();
+
+    @Query("Delete from musicien")
+    public void deleteAllMusiciens();
 }

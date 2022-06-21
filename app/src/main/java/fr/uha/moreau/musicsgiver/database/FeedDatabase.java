@@ -1,11 +1,6 @@
 package fr.uha.moreau.musicsgiver.database;
 
-import android.accounts.Account;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -75,6 +70,7 @@ public class FeedDatabase {
         mdao.addMusicienNiveauFormationAssociation(new MusicienNiveauFormationAssociation(Formation.JAZZ, Niveau.DEBUTANT, musiciensIds[1], instrumentsIds[3]));
         mdao.addMusicienNiveauFormationAssociation(new MusicienNiveauFormationAssociation(Formation.RAP, Niveau.EXPERT, musiciensIds[2], instrumentsIds[4]));
         mdao.addMusicienNiveauFormationAssociation(new MusicienNiveauFormationAssociation(Formation.ROCK, Niveau.INTERMEDIAIRE, musiciensIds[3], instrumentsIds[5]));
+        mdao.addMusicienNiveauFormationAssociation(new MusicienNiveauFormationAssociation(Formation.BLUES, Niveau.CONFIRME, musiciensIds[4], instrumentsIds[6]));
         mdao.addMusicienNiveauFormationAssociation(new MusicienNiveauFormationAssociation(Formation.FUNK, Niveau.DEBUTANT, musiciensIds[5], instrumentsIds[7]));
         mdao.addMusicienNiveauFormationAssociation(new MusicienNiveauFormationAssociation(Formation.BLUES, Niveau.EXPERT, musiciensIds[6], instrumentsIds[8]));
         mdao.addMusicienNiveauFormationAssociation(new MusicienNiveauFormationAssociation(Formation.ROCK, Niveau.INTERMEDIAIRE, musiciensIds[7], instrumentsIds[9]));
@@ -101,27 +97,5 @@ public class FeedDatabase {
                 feedMusiciensEtGroupes();
             }
         });
-    }
-
-    public void delete() {
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                deleteAllTheDatabase();
-            }
-        });
-    }
-
-    private void deleteAllTheDatabase() {
-        MusicienDao dao = AppDatabase.get().getMusicienDao();
-        GroupeDao gdao = AppDatabase.get().getGroupeDao();
-        InstrumentDao idao = AppDatabase.get().getInstrumentDao();
-
-        idao.getAll().getValue().forEach(idao::delete);
-        gdao.getAll().getValue().forEach(gdao::delete);
-        gdao.getAllMgas().getValue().forEach(gdao::delete);
-        dao.getAllMusiciens().getValue().forEach(dao::delete);
-        dao.getAllMnfas().getValue().forEach(dao::delete);
     }
 }

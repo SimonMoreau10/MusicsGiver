@@ -14,6 +14,7 @@ import androidx.navigation.ActionOnlyNavDirections;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,7 +50,10 @@ import fr.uha.moreau.musicsgiver.model.Formation;
 import fr.uha.moreau.musicsgiver.model.Instrument;
 import fr.uha.moreau.musicsgiver.model.Musicien;
 import fr.uha.moreau.musicsgiver.model.MusicienNiveauFormationAssociation;
+import fr.uha.moreau.musicsgiver.model.MusicienWithDetails;
 import fr.uha.moreau.musicsgiver.model.Niveau;
+import fr.uha.moreau.musicsgiver.ui.ItemSwipeCallback;
+import fr.uha.moreau.musicsgiver.ui.instruments.InstrumentsListFragment;
 
 public class MusiciensListFragment extends Fragment {
 
@@ -57,9 +61,7 @@ public class MusiciensListFragment extends Fragment {
     private MusiciensListFragmentBinding binding;
     private MusiciensAdapter adapter;
 
-    private Spinner spinner;
     private FloatingActionButton fab;
-    private Button button;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -70,14 +72,41 @@ public class MusiciensListFragment extends Fragment {
         DividerItemDecoration divider = new DividerItemDecoration(binding.recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         binding.recyclerView.addItemDecoration(divider);
 
-        spinner = (Spinner) binding.spinnerInstrument;
         fab = binding.floatingActionButton;
-        button = binding.button;
-        binding.button.setOnClickListener(
-                view -> NavHostFragment.findNavController(this).navigate(R.id.action_musiciensListFragment_to_musicienFragment)
+        fab.setOnClickListener(
+                view -> {
+                    MusiciensListFragmentDirections.ActionMusiciensListFragmentToMusicienFragment action = MusiciensListFragmentDirections.actionMusiciensListFragmentToMusicienFragment();
+                    action.setId(0);
+                    NavHostFragment.findNavController(this).navigate(R.id.action_musiciensListFragment_to_musicienFragment);
+                }
         );
 
+        ItemTouchHelper touchHelper = new ItemTouchHelper(
+                new ItemSwipeCallback(getContext(), ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT | ItemTouchHelper.UP , new ItemSwipeCallback.SwipeListener() {
+                    @Override
+                    public void onSwiped(int direction, int position) {
+                        switch (direction) {
+                            case ItemTouchHelper.RIGHT:
 
+                                MusiciensListFragmentDirections.ActionMusiciensListFragmentToMusicienFragment action = MusiciensListFragmentDirections.actionMusiciensListFragmentToMusicienFragment();
+                                action.setId(adapter.musiciens.get(position).getId());
+                                NavHostFragment.findNavController(MusiciensListFragment.this).navigate(action);
+                                break;
+                            case ItemTouchHelper.LEFT:
+                                Executor executor = Executors.newSingleThreadExecutor();
+                                executor.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mViewModel.deleteMusicienWithDetails(new MusicienWithDetails(adapter.musiciens.get(position).getId(), mViewModel.getMusicienDao(), mViewModel.getInstrumentDao()));
+                                    }
+                                });
+                                break;
+                        }
+                    }
+                })
+        );
+
+        touchHelper.attachToRecyclerView(binding.recyclerView);
 
         binding.recyclerView.setAdapter(adapter);
         return binding.getRoot();
@@ -93,38 +122,10 @@ public class MusiciensListFragment extends Fragment {
             mViewModel.setMusicienDao(appDatabase.getMusicienDao());
             mViewModel.setInstrumentDao(appDatabase.getInstrumentDao());
             mViewModel.getMusicienNiveauFormationAssociation().observe(getViewLifecycleOwner(), mnfas -> adapter.setCollectionAssociations(mnfas));
-            mViewModel.getAllInstruments().observe(getViewLifecycleOwner(), is -> {
-                Instrument[] instruments = is.toArray(new Instrument[0]);
-                ArrayAdapter<Instrument> spinadapter = new ArrayAdapter<>(binding.getRoot().getContext(), android.R.layout.simple_spinner_item, instruments);
-                spinadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-                spinner.setSelection(0,false);
-                spinner.setAdapter(spinadapter);
-            });
+            mViewModel.getMusiciens().observe(getViewLifecycleOwner(), musiciens -> adapter.setCollection(musiciens));
         });
 
         fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String nom = binding.nom.getText().toString();
-                String prenom = binding.prNom.getText().toString();
-                Executor executor = Executors.newSingleThreadExecutor();
-                final MusicienDao[] musicienDao = new MusicienDao[1];
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        musicienDao[0] = mViewModel.getMusicienDao();
-                        long id = musicienDao[0].getLastId() + 1;
-                        Musicien m = new Musicien(id, prenom, nom);
-                        mViewModel.addMusicien(m);
-                        Instrument i = (Instrument) spinner.getSelectedItem();
-                        MusicienNiveauFormationAssociation mnfa = new MusicienNiveauFormationAssociation(Formation.BLUES, Niveau.INTERMEDIAIRE, m.getId(), i.getId());
-                        mViewModel.addAssociation(mnfa);
-                    }
-                });
-            }
-        });
-
-        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MusiciensListFragmentDirections.ActionMusiciensListFragmentToMusicienFragment action = MusiciensListFragmentDirections.actionMusiciensListFragmentToMusicienFragment();
@@ -133,6 +134,7 @@ public class MusiciensListFragment extends Fragment {
             }
         });
     }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {;
@@ -143,6 +145,7 @@ public class MusiciensListFragment extends Fragment {
     private class MusiciensAdapter extends RecyclerView.Adapter<MusiciensAdapter.ViewHolder> {
 
         private List<MusicienNiveauFormationAssociation> mnfas;
+        private List<Musicien> musiciens;
 
         public void setCollectionAssociations(List<MusicienNiveauFormationAssociation> mnfas) {
             this.mnfas = mnfas;
@@ -189,6 +192,11 @@ public class MusiciensListFragment extends Fragment {
             return mnfas == null ? 0 : mnfas.size();
         }
 
+        @SuppressLint("NotifyDataSetChanged")
+        public void setCollection(List<Musicien> musiciens) {
+            this.musiciens = musiciens;
+            notifyDataSetChanged();
+        }
 
     }
 }

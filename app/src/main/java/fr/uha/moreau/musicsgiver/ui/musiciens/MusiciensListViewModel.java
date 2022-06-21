@@ -14,10 +14,12 @@ import fr.uha.moreau.musicsgiver.database.MusicienDao;
 import fr.uha.moreau.musicsgiver.model.Instrument;
 import fr.uha.moreau.musicsgiver.model.Musicien;
 import fr.uha.moreau.musicsgiver.model.MusicienNiveauFormationAssociation;
+import fr.uha.moreau.musicsgiver.model.MusicienWithDetails;
 
 public class MusiciensListViewModel extends ViewModel {
     private MusicienDao musicienDao;
     private MediatorLiveData<List<Musicien>> musiciens;
+    private MediatorLiveData<List<Instrument>> instruments;
     private MediatorLiveData<List<MusicienNiveauFormationAssociation>> mnfas;
     private InstrumentDao instrumentDao;
 
@@ -67,9 +69,18 @@ public class MusiciensListViewModel extends ViewModel {
 
     public void setInstrumentDao(InstrumentDao instrumentDao) {
         this.instrumentDao = instrumentDao;
+        this.instruments = new MediatorLiveData<>();
+        this.instruments.addSource(instrumentDao.getAll(), instruments::setValue);
     }
 
     public LiveData<List<Instrument>> getAllInstruments() {
         return instrumentDao.getAll();
+    }
+
+    public void deleteMusicienWithDetails(MusicienWithDetails m) {
+        MusicienNiveauFormationAssociation mnfa = musicienDao.getMnfaByMid(m.getId());
+        musicienDao.delete(mnfa);
+        Musicien mSansDetails = musicienDao.getById(m.getId());
+        musicienDao.delete(mSansDetails);
     }
 }

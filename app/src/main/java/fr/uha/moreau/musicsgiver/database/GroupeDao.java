@@ -35,4 +35,10 @@ public interface GroupeDao {
 
     @Delete
     public void delete(MusicienGroupeAssociation mga);
+
+    @Query("DELETE FROM GROUPES")
+    public void deleteAllGroupes();
+
+    @Query("DELETE FROM MUSICIENGROUPEASSOCIATIONS")
+    public void deleteAllMgas();
 }

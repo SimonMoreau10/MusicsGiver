@@ -4,17 +4,17 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/layout/fragment_list_instruments.xml" value="0.2" />
+        <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/layout/fragment_list_instruments.xml" value="0.1" />
         <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/layout/fragment_test.xml" value="0.264" />
         <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/layout/groupe_fragment.xml" value="0.18" />
         <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/layout/groupes_list_fragment.xml" value="0.1" />
         <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/layout/instrument_fragment.xml" value="0.1" />
         <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/layout/instrument_item.xml" value="0.1" />
-        <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/layout/musicien_fragment.xml" value="0.23125" />
+        <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/layout/musicien_fragment.xml" value="0.264" />
         <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/layout/musicien_item.xml" value="0.2" />
-        <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/layout/musiciens_list_fragment.xml" value="0.264" />
+        <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/layout/musiciens_list_fragment.xml" value="0.17894736842105263" />
         <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/menu/bottom_nav_menu.xml" value="0.21614583333333334" />
-        <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/menu/instrument_menu.xml" value="0.23125" />
+        <entry key="..\:/Users/lesis/Documents/ENSISA/3A/Android/MusicsGiver/MusicsGiver/app/src/main/res/menu/instrument_menu.xml" value="0.1" />
       </map>
     </option>
   </component>

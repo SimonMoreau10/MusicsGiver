@@ -3,13 +3,105 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 <data>
-    <variable name="m" type="fr.uha.moreau.musicsgiver.model.Musicien" />
+    <variable name="vm" type="fr.uha.moreau.musicsgiver.ui.musiciens.MusicienViewModel" />
+    <variable name="id" type="long" />
 </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/frameLayout4"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.musiciens.MusicienFragment">
+
+    <TextView
+        android:id="@+id/textViewFirstName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:text="Prénom"
+        app:layout_constraintEnd_toStartOf="@+id/textViewLastName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewLastName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:text="Nom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewFirstName"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <EditText
+        android:id="@+id/editTextFirstName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@{vm.prenom}"
+        app:layout_constraintEnd_toStartOf="@+id/editTextLastName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFirstName" />
+
+    <EditText
+        android:id="@+id/editTextLastName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@{vm.nom}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editTextFirstName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLastName" />
+
+    <Spinner
+        android:id="@+id/spinnerClasseDInstrument"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewClasseInstrument"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFirstName" />
+
+    <TextView
+        android:id="@+id/textViewClasseInstrument"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="18dp"
+        android:text="@string/classe_d_instrument"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerClasseDInstrument"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextFirstName" />
+
+    <TextView
+        android:id="@+id/textViewInstrument"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="18dp"
+        android:text="@string/instrument"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerInstrument"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewClasseInstrument" />
+
+    <Spinner
+        android:id="@+id/spinnerInstrument"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewInstrument"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerClasseDInstrument" />
 
     <Spinner
         android:id="@+id/spinnerNiveau"
@@ -32,73 +124,38 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewInstrument" />
 
-    <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@{m.firstName}"
-        app:layout_constraintEnd_toStartOf="@+id/editTextTextPersonName2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/editTextTextPersonName2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@{m.lastName}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Spinner
-        android:id="@+id/spinnerClasseDInstrument"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewClasseInstrument"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
-
     <TextView
-        android:id="@+id/textViewClasseInstrument"
+        android:id="@+id/textViewFormation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="18dp"
-        android:text="@string/classe_d_instrument"
-        app:layout_constraintEnd_toStartOf="@+id/spinnerClasseDInstrument"
+        android:text="Formation"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerFormation"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextTextPersonName" />
+        app:layout_constraintTop_toBottomOf="@id/textViewNiveau" />
 
-    <TextView
-        android:id="@+id/textViewInstrument"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="18dp"
-        android:text="@string/instrument"
-        app:layout_constraintEnd_toStartOf="@+id/spinnerInstrument"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewClasseInstrument" />
 
     <Spinner
-        android:id="@+id/spinnerInstrument"
+        android:id="@+id/spinnerFormation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewInstrument"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerClasseDInstrument" />
+        app:layout_constraintStart_toEndOf="@+id/textViewFormation"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerNiveau" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:src="@android:drawable/ic_input_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
