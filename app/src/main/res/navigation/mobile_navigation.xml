@@ -14,7 +14,28 @@
         android:id="@+id/groupesListFragment"
         android:name="fr.uha.moreau.musicsgiver.ui.groupes.GroupesListFragment"
         android:label="Groupes"
-        tools:layout="@layout/groupes_list_fragment" />
+        tools:layout="@layout/groupes_list_fragment" >
+        <action
+            android:id="@+id/action_groupesListFragment_to_groupeFragment"
+            app:destination="@id/groupeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/groupeFragment"
+        android:name="fr.uha.moreau.musicsgiver.ui.groupes.GroupeFragment"
+        android:label="Groupes"
+        tools:layout="@layout/groupe_fragment"
+        android:parentActivityName="fr.uha.moreau.musicsgiver.ui.groupes.GroupesListFragment" >
+        <argument
+            android:name="id"
+            android:defaultValue="0L"
+            app:argType="long" />
+        <argument
+            android:name="justCreated"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </fragment>
+
     <fragment
         android:id="@+id/musiciensListFragment"
         android:name="fr.uha.moreau.musicsgiver.ui.musiciens.MusiciensListFragment"

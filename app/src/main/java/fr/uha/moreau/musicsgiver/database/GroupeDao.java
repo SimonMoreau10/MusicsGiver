@@ -1,6 +1,7 @@
 package fr.uha.moreau.musicsgiver.database;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -10,6 +11,7 @@ import androidx.room.Query;
 import java.util.List;
 
 import fr.uha.moreau.musicsgiver.model.Groupe;
+import fr.uha.moreau.musicsgiver.model.Musicien;
 import fr.uha.moreau.musicsgiver.model.MusicienGroupeAssociation;
 
 @Dao
@@ -41,4 +43,10 @@ public interface GroupeDao {
 
     @Query("DELETE FROM MUSICIENGROUPEASSOCIATIONS")
     public void deleteAllMgas();
+
+    @Query("Select * from musicienGroupeAssociations where gid= :id")
+    public List<MusicienGroupeAssociation> getAllMgasByGID(long id);
+
+    @Query("SELECT * FROM groupes ORDER BY ID DESC LIMIT 1")
+    public Groupe getLastId();
 }
