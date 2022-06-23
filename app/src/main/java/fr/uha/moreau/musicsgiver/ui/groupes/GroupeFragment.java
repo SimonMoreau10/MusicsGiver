@@ -1,6 +1,7 @@
 package fr.uha.moreau.musicsgiver.ui.groupes;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
@@ -51,6 +52,8 @@ public class GroupeFragment extends Fragment {
     private GroupeAdapter adapter;
 
     private FloatingActionButton fab;
+    private boolean justCreated = false;
+    private long groupeId = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -83,7 +86,6 @@ public class GroupeFragment extends Fragment {
                 })
         );
         touchHelper.attachToRecyclerView(binding.recyclerView);
-
         binding.recyclerView.setAdapter(adapter);
         return binding.getRoot();
     }
@@ -91,24 +93,26 @@ public class GroupeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(MusiciensListViewModel.class);
-
+        mViewModel = new ViewModelProvider(this).get(GroupeViewModel.class);
+        if (getArguments() != null) {
+            justCreated = getArguments().getBoolean("justCreated");
+            groupeId = getArguments().getLong("idGroupe");
+        }
         AppDatabase.isReady().observe(getViewLifecycleOwner(), appDatabase -> {
             if (appDatabase == null) return;
+            mViewModel.setGroupeDao(appDatabase.getGroupeDao());
             mViewModel.setMusicienDao(appDatabase.getMusicienDao());
-            mViewModel.setInstrumentDao(appDatabase.getInstrumentDao());
-            mViewModel.getMusicienNiveauFormationAssociation().observe(getViewLifecycleOwner(), mnfas -> adapter.setCollectionAssociations(mnfas));
-            mViewModel.getMusiciens().observe(getViewLifecycleOwner(), musiciens -> adapter.setCollection(musiciens));
+            // mViewModel.getMusicienGroupeAssociationByGID(groupeId).observe(getViewLifecycleOwner(), mgas -> adapter.setCollectionAssociations(mgas));;
         });
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        /* fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MusiciensListFragmentDirections.ActionMusiciensListFragmentToMusicienFragment action = MusiciensListFragmentDirections.actionMusiciensListFragmentToMusicienFragment();
                 action.setId(0);
                 NavHostFragment.findNavController(MusiciensListFragment.this).navigate(action);
             }
-        });
+        }); */
     }
 
 
@@ -169,6 +173,7 @@ public class GroupeFragment extends Fragment {
         public void setCollection(List<Musicien> musiciens) {
             this.musiciens = musiciens;
             notifyDataSetChanged();
+
         }
 
     }

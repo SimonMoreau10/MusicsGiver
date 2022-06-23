@@ -31,7 +31,7 @@
         android:layout_marginStart="45dp"
         android:text="Nom"
         android:textAlignment="textEnd"
-        app:layout_constraintEnd_toStratOf="@+id/editTextNom"
+        app:layout_constraintEnd_toStartOf="@+id/editTextNom"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/spinnerFormation" />
 
@@ -56,7 +56,7 @@
         android:layout_marginStart="8dp"
         android:text="Formation"
         android:textAlignment="textEnd"
-        app:layout_constraintEnd_toStrartOf="@+id/spinnerFormation"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerFormation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/floatingActionButton" />
 

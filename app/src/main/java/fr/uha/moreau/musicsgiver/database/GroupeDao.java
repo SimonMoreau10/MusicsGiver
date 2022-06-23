@@ -49,4 +49,7 @@ public interface GroupeDao {
 
     @Query("SELECT * FROM groupes ORDER BY ID DESC LIMIT 1")
     public Groupe getLastId();
+
+    @Query("Select * from musicien m left outer join musicienGroupeAssociations mga on m.id = mga.mid where mga.gid = :id")
+    public List<MusicienGroupeAssociation> getAllMusiciensByGID(long id);
 }

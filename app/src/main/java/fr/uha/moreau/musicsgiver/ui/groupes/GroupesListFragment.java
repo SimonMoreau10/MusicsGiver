@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -84,9 +87,8 @@ public class GroupesListFragment extends Fragment {
                                 break;
                             case ItemTouchHelper.RIGHT:
                                 GroupesListFragmentDirections.ActionGroupesListFragmentToGroupeFragment action = GroupesListFragmentDirections.actionGroupesListFragmentToGroupeFragment();
-                                action.setId(g.getId());
-                                action.setJustCreated(false);
-                                NavHostFragment.findNavController(GroupesListFragment.this).navigate(GroupesListFragmentDirections.actionGroupesListFragmentToGroupeFragment());
+                                action.setIdGroupe(g.getId());
+                                NavHostFragment.findNavController(GroupesListFragment.this).navigate(action);
                                 break;
                         }
                     }
@@ -102,7 +104,6 @@ public class GroupesListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(GroupesListViewModel.class);
-
         AppDatabase.isReady().observe(getViewLifecycleOwner(), appDatabase -> {
             if (appDatabase == null) return;
             mViewModel.setGroupeDao(appDatabase.getGroupeDao());
@@ -114,12 +115,30 @@ public class GroupesListFragment extends Fragment {
             public void onClick(View view) {
                 Groupe g = new Groupe(0, binding.editTextNom.toString(), (Formation) binding.spinnerFormation.getSelectedItem());
                 mViewModel.addGroupe(g);
-                GroupesListFragmentDirections.ActionGroupesListFragmentToGroupeFragment action = GroupesListFragmentDirections.actionGroupesListFragmentToGroupeFragment();
-                action.setId(mViewModel.getLastIdGroupe());
-                action.setJustCreated(true);
                 NavHostFragment.findNavController(GroupesListFragment.this).navigate(GroupesListFragmentDirections.actionGroupesListFragmentToGroupeFragment());
             }
         });
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.vueParFormation) {
+            NavHostFragment.findNavController(GroupesListFragment.this).navigate(GroupesListFragmentDirections.actionGroupesListFragmentToMusicienParFormation());
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.groupe_menu, menu);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     private class GroupesListAdapter extends RecyclerView.Adapter<GroupesListAdapter.ViewHolder> {

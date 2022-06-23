@@ -10,6 +10,13 @@
         android:name="fr.uha.moreau.musicsgiver.ui.instruments.InstrumentsListFragment"
         android:label="Instruments"
         tools:layout="@layout/fragment_list_instruments" />
+
+    <fragment
+        android:id="@+id/musiciensParFormation"
+        android:name="fr.uha.moreau.musicsgiver.ui.groupes.MusicienParFormation"
+        android:label="Musiciens par formation"
+        tools:layout="@layout/musiciens_par_formation" />
+
     <fragment
         android:id="@+id/groupesListFragment"
         android:name="fr.uha.moreau.musicsgiver.ui.groupes.GroupesListFragment"
@@ -18,6 +25,9 @@
         <action
             android:id="@+id/action_groupesListFragment_to_groupeFragment"
             app:destination="@id/groupeFragment" />
+        <action
+            android:id="@+id/action_groupesListFragment_to_musicienParFormation"
+            app:destination="@id/musiciensParFormation" />
     </fragment>
 
     <fragment
@@ -27,14 +37,10 @@
         tools:layout="@layout/groupe_fragment"
         android:parentActivityName="fr.uha.moreau.musicsgiver.ui.groupes.GroupesListFragment" >
         <argument
-            android:name="id"
+            android:name="idGroupe"
             android:defaultValue="0L"
             app:argType="long" />
-        <argument
-            android:name="justCreated"
-            android:defaultValue="false"
-            app:argType="boolean" />
-    </fragment>
+        </fragment>
 
     <fragment
         android:id="@+id/musiciensListFragment"
@@ -51,7 +57,7 @@
         android:label="Musicien"
         tools:layout="@layout/musicien_fragment">
         <argument
-            android:name="id"
+            android:name="idMusicien"
             android:defaultValue="0L"
             app:argType="long" />
         <action

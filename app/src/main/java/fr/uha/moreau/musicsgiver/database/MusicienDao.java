@@ -1,6 +1,7 @@
 package fr.uha.moreau.musicsgiver.database;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -9,9 +10,11 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import fr.uha.moreau.musicsgiver.model.Formation;
 import fr.uha.moreau.musicsgiver.model.Groupe;
 import fr.uha.moreau.musicsgiver.model.Instrument;
 import fr.uha.moreau.musicsgiver.model.Musicien;
+import fr.uha.moreau.musicsgiver.model.MusicienGroupeAssociation;
 import fr.uha.moreau.musicsgiver.model.MusicienNiveauFormationAssociation;
 
 @Dao
@@ -48,4 +51,13 @@ public interface MusicienDao {
 
     @Query("Delete from musicien")
     public void deleteAllMusiciens();
+
+    @Query("Select m.id, m.firstName, m.lastName from musicien m inner join musicienNiveauFormationAssociation mnfa on m.id = mnfa.mid where mnfa.formation = :formation")
+    LiveData<List<Musicien>> getAllMusiciensByFormation(Formation formation);
+
+    @Query("Select * from musicienNiveauFormationAssociation mnfa where mnfa.formation = :formation")
+    LiveData<List<MusicienNiveauFormationAssociation>> getAllMnfasByFormation(Formation formation);
+
+    @Query("Select * from musicienGroupeAssociations")
+    LiveData<List<MusicienGroupeAssociation>> getAllMgas();
 }

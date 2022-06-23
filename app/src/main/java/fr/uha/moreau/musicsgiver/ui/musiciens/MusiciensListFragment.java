@@ -76,20 +76,20 @@ public class MusiciensListFragment extends Fragment {
         fab.setOnClickListener(
                 view -> {
                     MusiciensListFragmentDirections.ActionMusiciensListFragmentToMusicienFragment action = MusiciensListFragmentDirections.actionMusiciensListFragmentToMusicienFragment();
-                    action.setId(0);
+                    action.setIdMusicien(0);
                     NavHostFragment.findNavController(this).navigate(R.id.action_musiciensListFragment_to_musicienFragment);
                 }
         );
 
         ItemTouchHelper touchHelper = new ItemTouchHelper(
-                new ItemSwipeCallback(getContext(), ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT | ItemTouchHelper.UP , new ItemSwipeCallback.SwipeListener() {
+                new ItemSwipeCallback(getContext(), ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, new ItemSwipeCallback.SwipeListener() {
                     @Override
                     public void onSwiped(int direction, int position) {
                         switch (direction) {
                             case ItemTouchHelper.RIGHT:
 
                                 MusiciensListFragmentDirections.ActionMusiciensListFragmentToMusicienFragment action = MusiciensListFragmentDirections.actionMusiciensListFragmentToMusicienFragment();
-                                action.setId(adapter.musiciens.get(position).getId());
+                                action.setIdMusicien(adapter.musiciens.get(position).getId());
                                 NavHostFragment.findNavController(MusiciensListFragment.this).navigate(action);
                                 break;
                             case ItemTouchHelper.LEFT:
@@ -129,7 +129,7 @@ public class MusiciensListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 MusiciensListFragmentDirections.ActionMusiciensListFragmentToMusicienFragment action = MusiciensListFragmentDirections.actionMusiciensListFragmentToMusicienFragment();
-                action.setId(0);
+                action.setIdMusicien(0);
                 NavHostFragment.findNavController(MusiciensListFragment.this).navigate(action);
             }
         });

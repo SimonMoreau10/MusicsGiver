@@ -86,9 +86,6 @@ public class MusicienFragment extends Fragment {
         spinnerNiveau.setAdapter(spinadapterNiveau);
 
         fab = binding.floatingActionButton;
-        binding.floatingActionButton.setOnClickListener(
-                view -> NavHostFragment.findNavController(this).navigate(R.id.action_musicienFragment_to_musiciensListFragment)
-        );
 
         spinnerInstrument = binding.spinnerInstrument;
 
@@ -118,7 +115,7 @@ public class MusicienFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(MusicienViewModel.class);
         long id = 0;
         if(getArguments() != null) {
-            id = getArguments().getLong("id");
+            id = getArguments().getLong("idMusicien");
         }
         long finalId = id;
         AppDatabase.isReady().observe(getViewLifecycleOwner(), appDatabase -> {
@@ -168,23 +165,28 @@ public class MusicienFragment extends Fragment {
                 Niveau niveau = (Niveau) binding.spinnerNiveau.getSelectedItem();
                 Instrument instrument = (Instrument) binding.spinnerInstrument.getSelectedItem();
 
-                Executor executor = Executors.newSingleThreadExecutor();
-                executor.execute(new Runnable() {
-                    @Override
+                Thread T1 = new Thread() {
                     public void run() {
                         Musicien m = new Musicien(0, prenom, nom);
                         mViewModel.addMusicien(m);
                     }
-                });
+                };
+                T1.start();
                 NavHostFragment.findNavController(MusicienFragment.this).navigate((MusicienFragmentDirections.actionMusicienFragmentToMusiciensListFragment()));
-                executor.execute(new Runnable() {
+                Thread T2 = new Thread() {
                     @Override
                     public void run() {
                         MusicienNiveauFormationAssociation mnfa = new MusicienNiveauFormationAssociation(formation, niveau, mViewModel.getLastIDMusicien(), instrument.getId());
                         mViewModel.addMnfa(mnfa);
                     }
-                });
-
+                };
+                try {
+                    T1.join();
+                    T2.start();
+                    T2.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
