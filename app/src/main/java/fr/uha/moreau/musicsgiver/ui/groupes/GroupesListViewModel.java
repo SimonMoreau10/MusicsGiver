@@ -31,7 +31,7 @@ public class GroupesListViewModel extends ViewModel {
     }
 
     public void deleteGroupe(Groupe g) {
-        List<MusicienGroupeAssociation> mgas = groupeDao.getAllMgasByGID(g.getId());
+        List<MusicienGroupeAssociation> mgas = groupeDao.getAllMgasByGIDList(g.getId());
         for (MusicienGroupeAssociation mga: mgas) {
             groupeDao.delete(mga);
         }

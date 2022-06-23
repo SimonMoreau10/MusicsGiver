@@ -4,6 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable name="vm" type="fr.uha.moreau.musicsgiver.ui.groupes.GroupeViewModel" />
+        <variable
+            name="g"
+            type="fr.uha.moreau.musicsgiver.model.Groupe" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayout4"
@@ -17,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="18dp"
+            android:text="@{g.name}"
             app:layout_constraintEnd_toStartOf="@+id/spinnerFormation"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

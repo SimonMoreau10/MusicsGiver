@@ -19,6 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -34,6 +38,8 @@ import fr.uha.moreau.musicsgiver.databinding.GroupeFragmentBinding;
 import fr.uha.moreau.musicsgiver.databinding.MusicienInGroupItemBinding;
 import fr.uha.moreau.musicsgiver.databinding.MusicienItemBinding;
 import fr.uha.moreau.musicsgiver.databinding.MusiciensListFragmentBinding;
+import fr.uha.moreau.musicsgiver.model.Formation;
+import fr.uha.moreau.musicsgiver.model.Groupe;
 import fr.uha.moreau.musicsgiver.model.Instrument;
 import fr.uha.moreau.musicsgiver.model.Musicien;
 import fr.uha.moreau.musicsgiver.model.MusicienGroupeAssociation;
@@ -50,9 +56,10 @@ public class GroupeFragment extends Fragment {
     private GroupeViewModel mViewModel;
     private GroupeFragmentBinding binding;
     private GroupeAdapter adapter;
+    private Spinner spinnerFormation;
 
     private FloatingActionButton fab;
-    private boolean justCreated = false;
+    private TextView editTextView;
     private long groupeId = 0;
 
     @Override
@@ -86,6 +93,18 @@ public class GroupeFragment extends Fragment {
                 })
         );
         touchHelper.attachToRecyclerView(binding.recyclerView);
+
+        spinnerFormation = binding.spinnerFormation;
+        spinnerFormation = binding.spinnerFormation;
+        Formation[] formations = Formation.values();
+        ArrayAdapter<Formation> spinadapterFormation = new ArrayAdapter<>(binding.getRoot().getContext(), android.R.layout.simple_spinner_item, formations);
+        spinadapterFormation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+        spinnerFormation.setSelection(0,false);
+        spinnerFormation.setAdapter(spinadapterFormation);
+
+        spinnerFormation.setVisibility(View.GONE);
+
+        editTextView = binding.nom;
         binding.recyclerView.setAdapter(adapter);
         return binding.getRoot();
     }
@@ -95,15 +114,33 @@ public class GroupeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(GroupeViewModel.class);
         if (getArguments() != null) {
-            justCreated = getArguments().getBoolean("justCreated");
             groupeId = getArguments().getLong("idGroupe");
         }
+
         AppDatabase.isReady().observe(getViewLifecycleOwner(), appDatabase -> {
             if (appDatabase == null) return;
             mViewModel.setGroupeDao(appDatabase.getGroupeDao());
             mViewModel.setMusicienDao(appDatabase.getMusicienDao());
-            // mViewModel.getMusicienGroupeAssociationByGID(groupeId).observe(getViewLifecycleOwner(), mgas -> adapter.setCollectionAssociations(mgas));;
+
+            mViewModel.getMusicienGroupeAssociationByGID(groupeId).observe(getViewLifecycleOwner(), mgas -> adapter.setCollectionAssociations(mgas));;
+
         });
+/*        if (groupeId == 0) {
+            Thread T1 = new Thread() {
+                public void run() {
+                   groupeId = mViewModel.getGroupeDao().getLastId().getId();
+                    Groupe g = mViewModel.getGroupeDao().getById(groupeId);
+                    editTextView.setText(g.getName(), TextView.BufferType.EDITABLE);
+                    spinnerFormation.setSelection(getIndex(spinnerFormation, g.getFormation().toString()));
+                }
+            };
+            T1.start();
+            try {
+                T1.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } */
 
         /* fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +152,15 @@ public class GroupeFragment extends Fragment {
         }); */
     }
 
+    private int getIndex(Spinner spinner, String myString){
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                return i;
+            }
+        }
+
+        return 0;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {;

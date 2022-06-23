@@ -33,7 +33,7 @@
     <fragment
         android:id="@+id/groupeFragment"
         android:name="fr.uha.moreau.musicsgiver.ui.groupes.GroupeFragment"
-        android:label="Groupes"
+        android:label="Groupe"
         tools:layout="@layout/groupe_fragment"
         android:parentActivityName="fr.uha.moreau.musicsgiver.ui.groupes.GroupesListFragment" >
         <argument

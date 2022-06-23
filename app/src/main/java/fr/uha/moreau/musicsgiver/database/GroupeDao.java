@@ -45,11 +45,14 @@ public interface GroupeDao {
     public void deleteAllMgas();
 
     @Query("Select * from musicienGroupeAssociations where gid= :id")
-    public List<MusicienGroupeAssociation> getAllMgasByGID(long id);
+    public LiveData<List<MusicienGroupeAssociation>> getAllMgasByGID(long id);
 
     @Query("SELECT * FROM groupes ORDER BY ID DESC LIMIT 1")
     public Groupe getLastId();
 
     @Query("Select * from musicien m left outer join musicienGroupeAssociations mga on m.id = mga.mid where mga.gid = :id")
     public List<MusicienGroupeAssociation> getAllMusiciensByGID(long id);
+
+    @Query("Select * from musicienGroupeAssociations where gid= :id")
+    List<MusicienGroupeAssociation> getAllMgasByGIDList(long id);
 }

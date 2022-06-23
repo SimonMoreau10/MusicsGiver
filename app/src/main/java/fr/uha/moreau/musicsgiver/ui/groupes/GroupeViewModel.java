@@ -49,7 +49,7 @@ public class GroupeViewModel extends ViewModel {
     }
 
 
-    public List<MusicienGroupeAssociation> getMusicienGroupeAssociationByGID(long groupeId) {
+    public LiveData<List<MusicienGroupeAssociation>> getMusicienGroupeAssociationByGID(long groupeId) {
         return groupeDao.getAllMgasByGID(groupeId);
     }
 }
