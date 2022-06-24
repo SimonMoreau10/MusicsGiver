@@ -52,4 +52,8 @@ public class GroupeViewModel extends ViewModel {
     public LiveData<List<MusicienGroupeAssociation>> getMusicienGroupeAssociationByGID(long groupeId) {
         return groupeDao.getAllMgasByGID(groupeId);
     }
+
+    public void delete(MusicienGroupeAssociation musicienGroupeAssociation) {
+        groupeDao.delete(musicienGroupeAssociation);
+    }
 }

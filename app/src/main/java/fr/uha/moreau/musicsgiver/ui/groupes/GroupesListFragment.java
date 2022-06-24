@@ -115,7 +115,6 @@ public class GroupesListFragment extends Fragment {
             public void onClick(View view) {
                 Groupe g = new Groupe(0, binding.editTextNom.getText().toString(), (Formation) binding.spinnerFormation.getSelectedItem());
                 mViewModel.addGroupe(g);
-                NavHostFragment.findNavController(GroupesListFragment.this).navigate(GroupesListFragmentDirections.actionGroupesListFragmentToGroupeFragment());
             }
         });
     }

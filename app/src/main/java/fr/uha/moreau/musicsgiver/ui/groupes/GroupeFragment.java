@@ -78,14 +78,38 @@ public class GroupeFragment extends Fragment {
                 }
         );
         ItemTouchHelper touchHelper = new ItemTouchHelper(
-                new ItemSwipeCallback(getContext(), ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT | ItemTouchHelper.UP , new ItemSwipeCallback.SwipeListener() {
+                new ItemSwipeCallback(getContext(), ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT , new ItemSwipeCallback.SwipeListener() {
                     @Override
                     public void onSwiped(int direction, int position) {
                         switch (direction) {
                             case ItemTouchHelper.RIGHT:
-                                // voir le zikos
+                                GroupeFragmentDirections.ActionGroupeFragmentToMusicienFragment action = GroupeFragmentDirections.actionGroupeFragmentToMusicienFragment();
+                                Thread T1 = new Thread () {
+                                    public void run() {
+                                        action.setIdMusicien(mViewModel.getMusicienDao().getById(adapter.mgas.get(position).getMid()).getId());
+                                    }
+                                };
+                                T1.start();
+                                try {
+                                    T1.join();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                NavHostFragment.findNavController(GroupeFragment.this).navigate(action);
+
                                 break;
                             case ItemTouchHelper.LEFT:
+                                Thread T2 = new Thread () {
+                                    public void run() {
+                                        mViewModel.delete(adapter.mgas.get(position));
+                                    }
+                                };
+                                T2.start();
+                                try {
+                                    T2.join();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                                 // delete
                                 break;
                         }

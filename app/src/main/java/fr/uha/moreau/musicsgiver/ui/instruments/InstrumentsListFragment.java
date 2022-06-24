@@ -76,7 +76,7 @@ public class InstrumentsListFragment extends Fragment {
         });
 
         ItemTouchHelper touchHelper = new ItemTouchHelper(
-                new ItemSwipeCallback(getContext(), ItemTouchHelper.LEFT | ItemTouchHelper.UP , new ItemSwipeCallback.SwipeListener() {
+                new ItemSwipeCallback(getContext(), ItemTouchHelper.LEFT , new ItemSwipeCallback.SwipeListener() {
                     @Override
                     public void onSwiped(int direction, int position) {
                         Instrument c = adapter.instruments.get(position);

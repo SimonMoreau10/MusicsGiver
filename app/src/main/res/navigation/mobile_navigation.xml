@@ -15,7 +15,11 @@
         android:id="@+id/musiciensParFormation"
         android:name="fr.uha.moreau.musicsgiver.ui.groupes.MusicienParFormation"
         android:label="Musiciens par formation"
-        tools:layout="@layout/musiciens_par_formation" />
+        tools:layout="@layout/musiciens_par_formation" >
+        <action
+            android:id="@+id/action_musiciensParFormation_to_musicienFragment"
+            app:destination="@id/musicienFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/groupesListFragment"
@@ -40,7 +44,10 @@
             android:name="idGroupe"
             android:defaultValue="0L"
             app:argType="long" />
-        </fragment>
+        <action
+            android:id="@+id/action_groupeFragment_to_musicienFragment"
+            app:destination="@id/musicienFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/musiciensListFragment"

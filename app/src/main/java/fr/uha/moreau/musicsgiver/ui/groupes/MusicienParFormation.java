@@ -9,7 +9,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +37,7 @@ import fr.uha.moreau.musicsgiver.model.Formation;
 import fr.uha.moreau.musicsgiver.model.Instrument;
 import fr.uha.moreau.musicsgiver.model.Musicien;
 import fr.uha.moreau.musicsgiver.model.MusicienNiveauFormationAssociation;
+import fr.uha.moreau.musicsgiver.ui.ItemSwipeCallback;
 
 public class MusicienParFormation extends Fragment {
 
@@ -60,6 +63,24 @@ public class MusicienParFormation extends Fragment {
         spinadapterFormation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
         spinnerFormation.setSelection(0,false);
         spinnerFormation.setAdapter(spinadapterFormation);
+
+        ItemTouchHelper touchHelper = new ItemTouchHelper(
+                new ItemSwipeCallback(getContext(), ItemTouchHelper.RIGHT , new ItemSwipeCallback.SwipeListener() {
+                    @Override
+                    public void onSwiped(int direction, int position) {
+                        long id = adapter.mnfas.get(position).getMid();
+                        switch (direction) {
+                            case ItemTouchHelper.RIGHT:
+                                MusicienParFormationDirections.ActionMusiciensParFormationToMusicienFragment action = MusicienParFormationDirections.actionMusiciensParFormationToMusicienFragment();
+                                action.setIdMusicien(id);
+                                NavHostFragment.findNavController(MusicienParFormation.this).navigate(action);
+
+                                break;
+                        }
+                    }
+                })
+        );
+        touchHelper.attachToRecyclerView(binding.recyclerView);
 
         binding.recyclerView.setAdapter(adapter);
         return binding.getRoot();
